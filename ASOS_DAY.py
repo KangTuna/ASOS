@@ -42,7 +42,7 @@ class ASOS():
     def add_std(self,std: int) -> None:
         self.std.append(std)
 
-    # 크롤링 실패한 지점 확인
+    # 크롤링 실패한 지점 확인 
     def get_fails(self) -> set:
         return self.fail
     
@@ -94,9 +94,6 @@ class ASOS():
                                 key_idx = 0
                             continue
                         dicts = xml_dict['response']['body']['items']['item']
-                        # df_temp = pd.DataFrame(columns = ['지점', '지점명', '일시','최저기온(°C)', '최고기온(°C)', 
-                        #                                   '최대 풍속(m/s)', '평균 풍속(m/s)', '풍정합(100m)', '최소 상대습도(%)', '평균 상대습도(%)', 
-                        #                                   '합계 일조시간(hr)', '합계 일사량(MJ/m2)', '합계 소형증발량(mm)'])
                         df_temp = pd.DataFrame(columns = ['지점 번호', '지점명', '시간', '평균 기온', '최저 기온', '최저 기온 시각', '최고 기온', '최고 기온 시각', 
                                                           '강수 계속시간', '10분 최다강수량', '10분 최다강수량 시각', '1시간 최다강수량', '1시간 최다 강수량 시각', 
                                                           '일강수량', '최대 순간풍속', '최대 순간 풍속 풍향', '최대 순간풍속 시각', '최대 풍속', '최대 풍속 풍향', 
@@ -109,9 +106,6 @@ class ASOS():
                                                           '5.0m 지중온도', '합계 대형증발량', '합계 소형증발량', '9-9강수', '일기현상', '안개 계속 시간'])
 
                         for i in range(len(dicts)):
-                            # df_temp.loc[i] = [dicts[i]['stnId'], dicts[i]['stnNm'], dicts[i]['tm'], dicts[i]['minTa'], dicts[i]['maxTa'], 
-                            #                   dicts[i]['maxWs'], dicts[i]['avgWs'], dicts[i]['hr24SumRws'], dicts[i]['minRhm'], dicts[i]['avgRhm'],
-                            #                   dicts[i]['sumSsHr'], dicts[i]['sumGsr'], dicts[i]['sumSmlEv']]
                             df_temp.loc[i] = [dicts[i]['stnId'], dicts[i]['stnNm'], dicts[i]['tm'], dicts[i]['avgTa'], dicts[i]['minTa'], 
                                               dicts[i]['minTaHrmt'], dicts[i]['maxTa'], dicts[i]['maxTaHrmt'], dicts[i]['mi10MaxRn'], dicts[i]['mi10MaxRnHrmt'], 
                                               dicts[i]['hr1MaxRn'], dicts[i]['hr1MaxRnHrmt'], dicts[i]['sumRnDur'], dicts[i]['sumRn'], dicts[i]['maxInsWs'], 
