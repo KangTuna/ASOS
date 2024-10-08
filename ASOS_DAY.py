@@ -32,6 +32,7 @@ class ASOS():
         self.flagmax = 10
 
         self.keys = []
+        self.fail = set()
 
     # key 추가
     def add_keys(self,key: str) -> None:
@@ -41,6 +42,10 @@ class ASOS():
     def add_std(self,std: int) -> None:
         self.std.append(std)
 
+    # 크롤링 실패한 지점 확인
+    def get_fails(self) -> set:
+        return self.fail
+    
     # ASOS 데이터 가져오기
     def Crwal(self) -> None:
         for std in self.std:
@@ -140,5 +145,6 @@ class ASOS():
                 print(f'지점번호 {std} 완료 -- {datetime.now().time()}')
             else:
                 print(f'지점번호 {std} NO DATA')
+                self.fail.add(std)
 
     
