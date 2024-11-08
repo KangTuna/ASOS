@@ -30,6 +30,7 @@ class ASOS_Crwaler():
         self.startHh = startHh
         self.endHh = endHh
         self.flagmax = 10
+        self.observation_date = pd.read_csv('./observation_start_date_by_point.csv',encoding='utf-8 sig')
 
         # 시간단위 일단위 확인해서 바로 크롤러 작동
         self.type = datatype.upper()
@@ -46,10 +47,14 @@ class ASOS_Crwaler():
         # 지점 하나씩 돌리기
         for std in self.std:
             df = pd.DataFrame()
+            observation_start_date = self.observation_date.loc[self.observation_date['stn'] == std,'tm'].values
             print(f'지점번호 {std} 시작 -- {datetime.now().time()}')
             breaker = False
             # 시작 년도 부터 종료 년도 까지
             for year in range(self.start_year,self.end_year+1):
+                if f'{year}-01-01' < observation_start_date:
+                    print(f'지점번호 {std}는 {year}년에 관측하지 않았습니다.')
+                    continue
                 print(f'지점번호 {std} : {year}년 시작', end = ' ')
                 flag = 0
                 if breaker == True:
@@ -97,10 +102,12 @@ class ASOS_Crwaler():
                         # 요청이 잘못된경우 에러코드 및 메세지 보여주기
                         else:
                             raise RequestError(f'요청 실패, 에러 코드 :{result}')
-                        
+
+                    # 요청 관련 에러가 발생했을 때 키값 변경    
                     except RequestError:
                         key_idx += 1
                         key_idx %= len(key)
+
                     except:
                         # 최대 10회 재시도
                         flag += 1
@@ -112,11 +119,15 @@ class ASOS_Crwaler():
         # 지점 하나씩 돌리기
         for std in self.std:
             df = pd.DataFrame()
+            observation_start_date = self.observation_date.loc[self.observation_date['stn'] == std,'tm'].values
             print(f'지점번호 {std} 시작 -- {datetime.now().time()}')
             breaker = False
 
             # 시작 년도 부터 종료 년도 까지
             for year in range(self.start_year,self.end_year+1):
+                if f'{year}-01-01' < observation_start_date:
+                    print(f'지점번호 {std}는 {year}년에 관측하지 않았습니다.')
+                    continue
                 print(f'지점번호 {std} : {year}년 시작', end = ' ')
                 flag = 0
                 if breaker == True:
